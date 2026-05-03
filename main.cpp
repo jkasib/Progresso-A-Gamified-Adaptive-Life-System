@@ -43,9 +43,9 @@ void showHeader(string username = "", string rank = "", int level=0) {
     cout << "========================================================================================================================\n";
 
     if (username != "") {
-        cout << "\n----------------------------------------\n";
+        cout << "\n------------------------------------------------------\n";
         cout << "User: " << username << " | Rank: " << rank << " | Level: "<<level<< "\n";
-        cout << "----------------------------------------\n";
+        cout << "------------------------------------------------------\n";
     }
 
     cout << endl;
@@ -80,8 +80,8 @@ int main() {
                 break; // username is valid
             }
 
-            cout << "Enter password: ";
-            cin >> p;
+            
+            p = getHiddenPassword();
 
             registerUser(u, p);
 
@@ -92,18 +92,31 @@ int main() {
         }
 
         else if (choice == 2) {
-            string u, p;
-            cout<<"Username: ";
-            cin>>u;
-            cout<<"Enter Password: ";
-            cin>>p;
+                string u, p;
+                User user;
 
-            User user = loginUser(u, p);
+                while (true) {
 
-            if (user.getUsername() == "") {
-                cout << "Login failed!\n";
-                continue;
-            }
+                    cout << "Enter username: ";
+                    cin >> u;
+
+                    p = getHiddenPassword();
+
+                    user = loginUser(u, p);
+
+                    // CHECK SUCCESS
+                    if (user.getUsername() != "") {
+                        cout << "\nLogin successful!\n";
+                        cout << "Press Enter to continue...";
+                        cin.ignore();
+                        cin.get();
+                        break; // exit login loop
+                    }
+
+                    // ❌ FAILED LOGIN
+                    cout << "\nLogin failed! Try again.\n\n";
+                }
+
 
             int ch;
             while (true) {

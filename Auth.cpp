@@ -1,5 +1,6 @@
 #include "Auth.h"
 #include <fstream>
+#include <conio.h>
 
 bool registerUser(string username, string password) {
     try {
@@ -26,20 +27,37 @@ bool registerUser(string username, string password) {
 }
 
 User loginUser(string username, string password) {
-    ifstream file("users.txt");
-    string u, p;
+    try {
+        ifstream file("users.txt");
 
-    while (file >> u >> p) {
-        if (u == username && p == password) {
-            User user(u, p);
-            user.load();
-            return user;
+        if (!file.is_open()) {
+            cout << "Error opening file\n";
+            return User();
         }
+
+        string u, p;
+
+        while (file >> u >> p) {
+            if (u == username) {
+                if (p == password) {
+                    User user(u, p);
+                    user.load();
+                    return user;
+                }
+                else {
+                    cout << "\nWrong password!\n";
+                    return User(); // invalid login
+                }
+            }
+        }
+
+        cout << "User not found!\n";
+        return User();
     }
-    cout<<"\n-------------------------------------\n";
-    cout << "Invalid login. Try Again.....\n";
-    cout<<"-------------------------------------\n";
-    return User();
+    catch (...) {
+        cout << "Login error\n";
+        return User();
+    }
 }
 
 
@@ -65,4 +83,35 @@ bool isUsernameTaken(string username) {
     }
 
     return false;
+}
+
+
+
+
+string getHiddenPassword() {
+    string password = "";
+    char ch;
+
+    cout << "Enter password: ";
+
+    while (true) {
+        ch = _getch();
+
+        if (ch == 13) { // Enter key
+            break;
+        }
+        else if (ch == 8) { // Backspace
+            if (!password.empty()) {
+                password.pop_back();
+                cout << "\b \b";
+            }
+        }
+        else {
+            password.push_back(ch);
+            cout << "*";
+        }
+    }
+
+    cout << endl;
+    return password;
 }
