@@ -65,7 +65,7 @@ int main() {
         cin >> choice;
 
         if (choice == 1) {
-            string u, p;
+            string u, p, cp;
 
             while (true) {
 
@@ -74,17 +74,28 @@ int main() {
 
                 if (isUsernameTaken(u)) {
                     cout << "Username already exists! Try again.\n\n";
-                    continue;  //stays in registration loop
+                    continue;
                 }
 
-                break; // username is valid
-            }
+                // PASSWORD INPUT
+                cout << "Enter password: ";
+                p = getHiddenPassword();
 
-            
-            p = getHiddenPassword();
+                // CONFIRM PASSWORD INPUT
+                cout << "Confirm password: ";
+                cp = getHiddenPassword();
+
+                if (p != cp) {
+                    cout << "Passwords do not match! Try again.\n\n";
+                    continue; // restart registration loop
+                }
+
+                break; // everything OK
+            }
 
             registerUser(u, p);
 
+            // cout << "\nRegistration successful!\n";
             cout << "\nPress Enter to continue...";
             cin.ignore();
             cin.get();
@@ -100,6 +111,7 @@ int main() {
                     cout << "Enter username: ";
                     cin >> u;
 
+                    cout << "Enter password: ";
                     p = getHiddenPassword();
 
                     user = loginUser(u, p);

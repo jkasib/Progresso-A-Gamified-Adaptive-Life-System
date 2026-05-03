@@ -17,7 +17,7 @@ bool registerUser(string username, string password) {
 
         file.close();
 
-        cout << "Registration successful!\n";
+        cout << "\nRegistration successful!\n";
         return true;
     }
     catch (...) {
@@ -92,7 +92,7 @@ string getHiddenPassword() {
     string password = "";
     char ch;
 
-    cout << "Enter password: ";
+    
 
     while (true) {
         ch = _getch();
