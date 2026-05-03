@@ -52,6 +52,10 @@ string User::getRank() {
     return rank;
 }
 
+int User::getLevel(){
+    return level;
+}
+
 bool User::checkPassword(string p) {
     return password == p;
 }
@@ -89,23 +93,32 @@ void User::showTasks() {
 }
 
 void User::completeTask(int id) {
-    updateDailyProgress(); // check day first
+    updateDailyProgress();
 
-    for (auto &t : tasks) {
-        if (t.getId() == id && !t.isCompleted()) {
-            t.markComplete();
+    for (auto it = tasks.begin(); it != tasks.end(); ) {
+        if (it->getId() == id && !it->isCompleted()) {
 
-            int pts = t.getPoints();
+            int pts = it->getPoints();
+
+            it->markComplete();
+
             updateXP(pts);
-
-            completedToday = true; // ✅ mark today done
-
-            save();
+            completedToday = true;
 
             cout << "Task completed! +" << pts << " XP\n";
+
+            // REMOVE TASK FROM LIST
+            it = tasks.erase(it);
+
+            save();
             return;
         }
+        else {
+            ++it;
+        }
     }
+
+    cout << "Task not found!\n";
 }
 
 void User::updateXP(int points) {
@@ -118,19 +131,28 @@ void User::updateLevel() {
     if (xp >= required) {
         xp -= required;
         level++;
-        cout << "Level Up! Now Level " << level << endl;
+        levelUpFlag = true;
     }
 }
 
 void User::updateRank() {
-    if (streak >= 365) rank = "Conqueror";
-    else if (streak >= 180) rank = "Commander";
-    else if (streak >= 90) rank = "Knight";
-    else if (streak >= 60) rank = "Elite";
-    else if (streak >= 30) rank = "Warrior";
-    else if (streak >= 15) rank = "Soldier";
-    else if (streak >= 7) rank = "Cadet";
-    else rank = "Recruit";
+    string newRank;
+
+    if (streak >= 365) newRank = "Conqueror";
+    else if (streak >= 180) newRank = "Commander";
+    else if (streak >= 90) newRank = "Knight";
+    else if (streak >= 60) newRank = "Elite";
+    else if (streak >= 30) newRank = "Warrior";
+    else if (streak >= 15) newRank = "Soldier";
+    else if (streak >= 7) newRank = "Cadet";
+    else newRank = "Recruit";
+
+    // CHECK IF RANK CHANGED
+    if (newRank != rank) {
+        previousRank = rank;
+        rank = newRank;
+        rankUpFlag = true;
+    }
 }
 
 void User::save() {

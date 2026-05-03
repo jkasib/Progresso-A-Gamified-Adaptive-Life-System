@@ -15,9 +15,12 @@ private:
     string rank;
     string lastActiveDate;
     bool completedToday;
+    string previousRank;
     vector<Task> tasks;
 
 public:
+    bool levelUpFlag = false;
+    bool rankUpFlag = false;
     User() {}
 
     User(string u, string p);
@@ -38,6 +41,7 @@ public:
     void load();
 
     string getRank();
+    int getLevel();
     void showStats();
     void reset();
 

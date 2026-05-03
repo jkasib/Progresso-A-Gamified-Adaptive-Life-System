@@ -22,21 +22,29 @@ public:
 };
 
 
+void wait() {
+    cout << "\nPress Enter to get back to main menu...";
+    cin.ignore();
+    cin.get();
+}
+
+
 void clearScreen() {
     system("cls"); // Windows
     // system("clear"); // Linux/Mac
 }
 
-void showHeader(string username = "", string rank = "") {
+void showHeader(string username = "", string rank = "", int level=0) {
     cout << "\n";
-    cout << "========================================\n";
+    cout << "========================================================================================================================\n";
     
     cout << "\n";
-    cout << "               PROGRESSO \n\n";
-    cout << "========================================\n";
+    cout << "                                                    PROGRESSO \n\n";
+    cout << "========================================================================================================================\n";
 
     if (username != "") {
-        cout << "User: " << username << " | Rank: " << rank << "\n";
+        cout << "\n----------------------------------------\n";
+        cout << "User: " << username << " | Rank: " << rank << " | Level: "<<level<< "\n";
         cout << "----------------------------------------\n";
     }
 
@@ -82,7 +90,7 @@ int main() {
             int ch;
             while (true) {
                 clearScreen();
-                showHeader(user.getUsername(), user.getRank());
+                showHeader(user.getUsername(), user.getRank(), user.getLevel());
 
                 cout << "1. Add Task\n";
                 cout << "2. Show Tasks\n";
@@ -114,16 +122,36 @@ int main() {
 
                 else if (ch == 2) {
                     user.showTasks();
+                    wait();
                 }
 
                 else if (ch == 3) {
                     int id;
                     cin >> id;
+
                     user.completeTask(id);
+
+                    // RANK UP MESSAGE HANDLER
+                    if (user.rankUpFlag) {
+                        cout << "RANK UP! You are now a " << user.getRank() << endl;
+                        user.rankUpFlag = false;
+                        wait();
+                    }
+
+                    // LEVEL UP MESSAGE CHECK (STEP 4C)
+                    if (user.levelUpFlag) {
+                        cout << "LEVEL UP! Upgraded to Level " << user.getLevel() << endl;
+                        user.levelUpFlag = false;
+                        wait();
+                    }
+                    else {
+                        wait();
+                    }
                 }
 
                 else if (ch == 4) {
                     user.showStats();
+                    wait();
                 }
 
                 else if (ch == 5) {
