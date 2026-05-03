@@ -66,11 +66,29 @@ int main() {
 
         if (choice == 1) {
             string u, p;
-            cout<<"Username: ";
-            cin>>u;
-            cout<<"Enter Password: ";
-            cin>>p;
+
+            while (true) {
+
+                cout << "Enter username: ";
+                cin >> u;
+
+                if (isUsernameTaken(u)) {
+                    cout << "Username already exists! Try again.\n\n";
+                    continue;  //stays in registration loop
+                }
+
+                break; // username is valid
+            }
+
+            cout << "Enter password: ";
+            cin >> p;
+
             registerUser(u, p);
+
+            cout << "\nPress Enter to continue...";
+            cin.ignore();
+            cin.get();
+
         }
 
         else if (choice == 2) {
@@ -102,7 +120,7 @@ int main() {
                 cin >> ch;
 
                 if (ch == 1) {
-                    int id, d, r;
+                    int id, r;
                     string title;
                     while (true) {
                         cout << "Enter Task ID: ";

@@ -2,9 +2,27 @@
 #include <fstream>
 
 bool registerUser(string username, string password) {
-    ofstream file("users.txt", ios::app);
-    file << username << " " << password << endl;
-    return true;
+    try {
+     
+
+        ofstream file("users.txt", ios::app);
+
+        if (!file.is_open()) {
+            cout << "Error opening file\n";
+            return false;
+        }
+
+        file << username << " " << password << endl;
+
+        file.close();
+
+        cout << "Registration successful!\n";
+        return true;
+    }
+    catch (...) {
+        cout << "Error registering user\n";
+        return false;
+    }
 }
 
 User loginUser(string username, string password) {
@@ -22,4 +40,29 @@ User loginUser(string username, string password) {
     cout << "Invalid login. Try Again.....\n";
     cout<<"-------------------------------------\n";
     return User();
+}
+
+
+// Unique username
+bool isUsernameTaken(string username) {
+    try {
+        ifstream file("users.txt");
+
+        if (!file.is_open()) return false;
+
+        string u, p;
+
+        while (file >> u >> p) {
+            if (u == username) {
+                return true;
+            }
+        }
+
+        file.close();
+    }
+    catch (...) {
+        cout << "Error checking username\n";
+    }
+
+    return false;
 }

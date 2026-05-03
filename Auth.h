@@ -5,5 +5,6 @@
 
 bool registerUser(string username, string password);
 User loginUser(string username, string password);
+bool isUsernameTaken(string username);
 
 #endif
