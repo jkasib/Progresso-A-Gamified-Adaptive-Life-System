@@ -48,6 +48,10 @@ void User::updateDailyProgress() {
     }
 }
 
+string User::getRank() {
+    return rank;
+}
+
 bool User::checkPassword(string p) {
     return password == p;
 }

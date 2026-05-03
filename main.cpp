@@ -21,11 +21,39 @@ public:
     }
 };
 
+
+void clearScreen() {
+    system("cls"); // Windows
+    // system("clear"); // Linux/Mac
+}
+
+void showHeader(string username = "", string rank = "") {
+    cout << "\n";
+    cout << "========================================\n";
+    
+    cout << "\n";
+    cout << "               PROGRESSO \n\n";
+    cout << "========================================\n";
+
+    if (username != "") {
+        cout << "User: " << username << " | Rank: " << rank << "\n";
+        cout << "----------------------------------------\n";
+    }
+
+    cout << endl;
+}
+
+
+
+
 int main() {
     int choice;
 
     while (true) {
-        cout << "\n1. Register\n2. Login\n3. Exit\nChoice: ";
+        clearScreen();
+        showHeader();
+
+        cout << "1. Register\n2. Login\n3. Exit\nChoice: ";
         cin >> choice;
 
         if (choice == 1) {
@@ -53,7 +81,16 @@ int main() {
 
             int ch;
             while (true) {
-                cout << "\n1.Add Task\n2.Show Tasks\n3.Complete Task\n4.Stats\n5.Reset\n6.Logout\nChoice: ";
+                clearScreen();
+                showHeader(user.getUsername(), user.getRank());
+
+                cout << "1. Add Task\n";
+                cout << "2. Show Tasks\n";
+                cout << "3. Complete Task\n";
+                cout << "4. Stats\n";
+                cout << "5. Reset\n";
+                cout << "6. Logout\n";
+                cout << "Choice: ";
                 cin >> ch;
 
                 if (ch == 1) {

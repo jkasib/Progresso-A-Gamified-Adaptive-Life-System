@@ -37,6 +37,7 @@ public:
     void save();
     void load();
 
+    string getRank();
     void showStats();
     void reset();
 
