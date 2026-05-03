@@ -10,6 +10,10 @@ User::User(string u, string p) {
     rank = "Recruit";
 }
 
+bool User::isTaskListEmpty() {
+    return tasks.empty();
+}
+
 // for streak
 
 
@@ -86,7 +90,7 @@ void User::showTasks() {
         return;
     }
 
-    cout << "\n===== TASK LIST =====\n";
+    
     for (auto &t : tasks) {
         cout<<".........................................\n";
         cout << "ID: " << t.getId()<<endl
@@ -98,10 +102,12 @@ void User::showTasks() {
     }
 }
 
-void User::completeTask(int id) {
+bool User::completeTask(int id) {
+
     updateDailyProgress();
 
-    for (auto it = tasks.begin(); it != tasks.end(); ) {
+    for (auto it = tasks.begin(); it != tasks.end(); ++it) {
+
         if (it->getId() == id && !it->isCompleted()) {
 
             int pts = it->getPoints();
@@ -111,20 +117,16 @@ void User::completeTask(int id) {
             updateXP(pts);
             completedToday = true;
 
-            cout << "Task completed! +" << pts << " XP\n";
-
-            // REMOVE TASK FROM LIST
-            it = tasks.erase(it);
+            // 🔥 REMOVE TASK
+            tasks.erase(it);
 
             save();
-            return;
-        }
-        else {
-            ++it;
+
+            return true;
         }
     }
 
-    cout << "Task not found!\n";
+    return false;
 }
 
 void User::updateXP(int points) {

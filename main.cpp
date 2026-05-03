@@ -164,22 +164,38 @@ int main() {
                 }
 
                 else if (ch == 2) {
+                    cout << "\n===== TASK LIST =====\n";
                     user.showTasks();
                     wait();
                 }
 
                 else if (ch == 3) {
+                    cout << "\n===== AVAILABLE TASKS =====\n";
+                    user.showTasks();
+
+                    if (user.isTaskListEmpty()) {
+                        cout << "No tasks available!\n";
+                        cin.ignore();
+                        cin.get();
+                        continue;
+                    }
+
                     int id;
+
+                    cout << "\nEnter the ID of the completed task: ";
                     cin >> id;
 
-                    user.completeTask(id);
+                    bool found = user.completeTask(id);
 
-                    // RANK UP MESSAGE HANDLER
-                    if (user.rankUpFlag) {
-                        cout << "RANK UP! You are now a " << user.getRank() << endl;
-                        user.rankUpFlag = false;
-                        wait();
+                    if (found) {
+                        cout << "\nTask " << id << " is completed!\n";
+                    } else {
+                        cout << "\nInvalid Task ID!\n";
                     }
+
+                    cout << "\nPress Enter to return to main menu...";
+                    cin.ignore();
+                    cin.get();
 
                     // LEVEL UP MESSAGE CHECK (STEP 4C)
                     if (user.levelUpFlag) {

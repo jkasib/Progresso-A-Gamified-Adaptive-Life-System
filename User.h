@@ -30,7 +30,8 @@ public:
 
     void addTask(Task t);
     void showTasks();
-    void completeTask(int id);
+    bool isTaskListEmpty();
+    bool completeTask(int id);
 
     void updateXP(int points);
     void updateLevel();
