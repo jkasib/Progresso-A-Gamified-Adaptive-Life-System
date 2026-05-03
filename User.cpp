@@ -81,6 +81,12 @@ void User::addTask(Task t) {
 }
 
 void User::showTasks() {
+    if (tasks.empty()) {
+        cout << "\nNo task added...\n";
+        return;
+    }
+
+    cout << "\n===== TASK LIST =====\n";
     for (auto &t : tasks) {
         cout<<".........................................\n";
         cout << "ID: " << t.getId()<<endl
@@ -156,41 +162,73 @@ void User::updateRank() {
 }
 
 void User::save() {
-    ofstream file(username + ".txt");
+    try {
+        ofstream file(username + ".txt");
 
-    file << xp << " " << level << " " << streak << " " << rank << endl;
-    file << lastActiveDate << " " << completedToday << endl;
-    file << tasks.size() << endl; // VERY IMPORTANT
+        if (!file.is_open()) {
+            cout << "Error opening file for saving\n";
+            return;
+        }
 
-    for (auto &t : tasks) {
-        file << t.getId() << " "
-             << t.getTitle() << " "
-             << t.getRating() << " "
-             << t.isCompleted() << endl;
+        file << xp << " " << level << " " << streak << " " << rank << endl;
+        file << lastActiveDate << " " << completedToday << endl;
+
+        // ALWAYS WRITE TASK COUNT (even if 0)
+        file << tasks.size() << endl;
+
+        for (auto &t : tasks) {
+            file << t.getId() << " "
+                 << t.getTitle() << " "
+                 << t.getRating() << " "
+                 << t.isCompleted() << endl;
+        }
+
+        file.close();
+    }
+    catch (...) {
+        cout << "Error saving file\n";
     }
 }
 
 void User::load() {
-    ifstream file(username + ".txt");
-    if (!file) return;
+    try {
+        ifstream file(username + ".txt");
 
-    tasks.clear();
+        if (!file.is_open()) {
+            cout << "No previous data found\n";
+            return;
+        }
 
-    int taskCount;
-    file >> xp >> level >> streak >> rank;
-    file >> lastActiveDate >> completedToday;
-    file >> taskCount;
+        tasks.clear();
 
-    for (int i = 0; i < taskCount; i++) {
-        int id, r, completed;
-        string title;
+        file >> xp >> level >> streak >> rank;
+        file >> lastActiveDate >> completedToday;
 
-        file >> id >> title >> r >> completed;
+        int taskCount = 0;
 
-        Task t(id, title, r);
-        if (completed) t.markComplete();
+        // 🔥 SAFE READ
+        if (!(file >> taskCount)) {
+            taskCount = 0;
+        }
 
-        tasks.push_back(t);
+        for (int i = 0; i < taskCount; i++) {
+            int id, d, r, completed;
+            string title;
+
+            if (!(file >> id >> title >> d >> r >> completed)) {
+                break; // prevents garbage values
+            }
+
+            Task t(id, title, r);
+            if (completed) t.markComplete();
+
+            tasks.push_back(t);
+        }
+
+        file.close();
+    }
+    catch (...) {
+        cout << "Error loading file\n";
     }
 }
 
@@ -206,6 +244,10 @@ void User::reset() {
     level = 1;
     streak = 0;
     rank = "Recruit";
+
+    lastActiveDate = "";
+    completedToday = false;
+
     tasks.clear();
 
     save();
