@@ -23,7 +23,7 @@ public:
 
 
 void wait() {
-    cout << "\nPress Enter to get back to main menu...";
+    cout << "\nPress Enter to return to main menu...";
     cin.ignore();
     cin.get();
 }
@@ -193,7 +193,7 @@ int main() {
                         cout << "\nInvalid Task ID!\n";
                     }
 
-                    cout << "\nPress Enter to return to main menu...";
+                    
                     cin.ignore();
                     cin.get();
 
