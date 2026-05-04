@@ -157,8 +157,24 @@ int main() {
                     }
                     cout<<"Name of the task: ";
                     cin>>title;
-                    cout<<"Rate the task out of 10: ";
-                    cin>>r;
+                    while (true) {
+                        cout << "Enter task rating (0 - 10): ";
+                        cin >> r;
+
+                        if (cin.fail()) {
+                            cin.clear();
+                            cin.ignore(1000, '\n');
+                            cout << "Invalid input! Enter a number.\n";
+                            continue;
+                        }
+
+                        if (r < 0 || r > 10) {
+                            cout << "Rating must be between 0 and 10!\n";
+                            continue;
+                        }
+
+                        break; // valid input
+                    }
 
                     user.addTask(Task(id, title, r));
                 }
