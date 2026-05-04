@@ -115,9 +115,11 @@ int main() {
                     p = getHiddenPassword();
 
                     user = loginUser(u, p);
+                    
 
                     // CHECK SUCCESS
                     if (user.getUsername() != "") {
+                        user.load();
                         cout << "\nLogin successful!\n";
                         cout << "Press Enter to continue...";
                         cin.ignore();
@@ -156,6 +158,7 @@ int main() {
                         cout << "ID already exists! Enter a different ID.\n";
                     }
                     cout<<"Name of the task: ";
+                    cin.ignore();
                     cin>>title;
                     while (true) {
                         cout << "Enter task rating (0 - 10): ";

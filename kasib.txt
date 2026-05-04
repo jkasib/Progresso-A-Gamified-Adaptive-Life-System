@@ -1,4 +1,6 @@
-130 6 1 Recruit
+40 8 1 Recruit
 2026-5-4 1
-1
-1 Gym 9 0
+3
+1 Study 9 0
+2 gym 9 0
+3 Eat 5 0

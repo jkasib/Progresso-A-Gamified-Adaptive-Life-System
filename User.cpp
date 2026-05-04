@@ -214,10 +214,10 @@ void User::load() {
         }
 
         for (int i = 0; i < taskCount; i++) {
-            int id, d, r, completed;
+            int id, r, completed;
             string title;
 
-            if (!(file >> id >> title >> d >> r >> completed)) {
+            if (!(file >> id >> title >> r >> completed)) {
                 break; // prevents garbage values
             }
 
